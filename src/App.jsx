@@ -145,14 +145,14 @@ const App = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 w-[80%] sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center items-center mt-4 gap-2">
+      <div className="grid grid-cols-1 w-[89%] sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center items-center mt-4 gap-2">
         {movies.map((movie) => (
           <div
-            className="flex flex-col relative h-50 items-center border-2  border-gray-200 p-4  rounded-md
+            className="flex flex-col relative h-60 items-center border-2  border-gray-200 p-4  rounded-md
           shadow-lg bg-blue-100"
           >
             <h1
-              className="text-2xl font-extrabold flex mt-5 justify-center items-center"
+              className="text-2xl font-extrabold flex mt-8 justify-center items-center"
               style={{ color: movie.receivedAnOscar ? "green" : "red" }}
             >
               {movie.title}
@@ -162,17 +162,17 @@ const App = () => {
             
             <button
               onClick={() => delMovie(movie.id)}
-              className="text-white font-bold bg-red-600 py-1 px-1 absolute bottom-2 left-8 rounded-md hover:bg-red-900"
+              className="text-white font-bold bg-red-600 py-1 px-3 absolute bottom-2 left-8 rounded-md hover:bg-red-900"
             >
               Delete
             </button>
 
-            <button onClick={updateMovie} className={`fixed bottom-5 left-5 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition ${showCard ? "pointer-events-none opacity-50" : ""}`}
-        disabled={showCard}>Add Movies</button>
+            <button onClick={updateMovie} className={`bg-blue-700 py-1 px-3 rounded-sm text-white font-bold hover:bg-blue-800 absolute top-2 left-2 mb-3`}
+        >Update Movies</button>
         
             <button
               onClick={likeMovie}
-              className="text-white font-bold bg-green-600 py-1 px-3 hover:bg-green-700 rounded-md absolute bottom-2 right-8"
+              className="text-white font-bold bg-green-600 py-1 px-6 hover:bg-green-700 rounded-md absolute bottom-2 right-8"
             >
               Like
             </button>
