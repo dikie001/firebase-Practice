@@ -1,7 +1,9 @@
 import React from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
-const UpdateMovies = ({onClose}) => {
+const UpdateMovies = ({showCard, setShowCard}) => {
     
   return (
     <div className="fixed top-[20%] z-20 bg-gray-200  rounded-md flex flex-col items-center space-y-4 w-100 border-2 border-gray-400">
@@ -27,11 +29,11 @@ const UpdateMovies = ({onClose}) => {
           Received an Oscar
         </label>
       </div>
-      <div className=" mt-2 flex flex-row justify-items-center items-center ">
-        <button className="bg-green-600 text-white px-4 py-2 rounded-md font-bold m-2 hover:bg-green-700 shadow-lg">
+      <div  className=" mt-2 flex flex-row justify-items-center items-center ">
+        <button onClick={()=>setShowCard(false)(toast.success("Updated Sucessfully!") )} className="bg-green-600 text-white px-4 py-2 rounded-md font-bold m-2 hover:bg-green-700 shadow-lg">
           Submit
         </button>
-        <button  onClick={onClose} className="bg-gray-600 text-white px-4 py-2 rounded-md font-bold m-2  hover:bg-gray-700 shadow-lg">
+        <button  onClick={()=>setShowCard(false)} className="bg-gray-600 text-white px-4 py-2 rounded-md font-bold m-2  hover:bg-gray-700 shadow-lg">
           Cancel
         </button>
       </div>

@@ -25,6 +25,7 @@ const App = () => {
   const [newDate, setNewDate] = useState(0);
   const [newOscar, setNewOscar] = useState(false);
   const [showCard, setShowCard] = useState(false);
+  const [cancel, setCancel] = useState(false);
 
   const getMovieList = async () => {
     try {
@@ -81,6 +82,7 @@ const App = () => {
   };
   const updateMovie = async (id) => {
     setShowCard(true);
+    setCancel(true)
   }
 
   const likeMovie = () => {
@@ -97,7 +99,7 @@ const App = () => {
       <ToastContainer />
       {showCard &&(
       <div className="fixed flex inset-0 z-20 bg-opacity-20 backdrop-blur-md backdrop-contrast-40 items-center justify-center ">
-      {showCard && <UpdateMovies onClose={()=>setShowCard(false)} />}
+      {showCard && <UpdateMovies showCard={showCard} setCancel={setCancel} cancel={cancel} setShowCard={setShowCard}/>}
       </div>
 )}
       <div className="flex flex-col justify-center items-center mt-4">
@@ -143,35 +145,34 @@ const App = () => {
         </button>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center items-center mt-4">
+      <div className="grid grid-cols-1 w-[80%] sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 justify-center items-center mt-4 gap-2">
         {movies.map((movie) => (
           <div
-            className="flex flex-col relative justify-center h-70 items-center border-2  border-gray-200 p-4 m-4 rounded-md
+            className="flex flex-col relative h-50 items-center border-2  border-gray-200 p-4  rounded-md
           shadow-lg bg-blue-100"
           >
             <h1
-              className="text-2xl font-extrabold flex justify-center items-center"
+              className="text-2xl font-extrabold flex mt-5 justify-center items-center"
               style={{ color: movie.receivedAnOscar ? "green" : "red" }}
             >
               {movie.title}
             </h1>
             <p className="text-xl font-semibold">Actor: {movie.Actor}</p>
             <p className="font-semibold text-xl">Date: {movie.releaseDate}</p>
+            
             <button
               onClick={() => delMovie(movie.id)}
-              className="text-white font-bold bg-red-600 py-1 px-1 absolute bottom-1 left-1 rounded-md hover:bg-red-900"
+              className="text-white font-bold bg-red-600 py-1 px-1 absolute bottom-2 left-8 rounded-md hover:bg-red-900"
             >
               Delete
             </button>
-            <button
-              onClick={updateMovie}
-              className="bg-blue-700 absolute bottom-1 py-1 px-2 rounded-md text-white font-bold"
-            >
-              Update Movie
-            </button>
+
+            <button onClick={updateMovie} className={`fixed bottom-5 left-5 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-blue-800 transition ${showCard ? "pointer-events-none opacity-50" : ""}`}
+        disabled={showCard}>Add Movies</button>
+        
             <button
               onClick={likeMovie}
-              className="text-white font-bold bg-green-600 py-1 px-3 hover:bg-green-700 rounded-md absolute bottom-1 right-1"
+              className="text-white font-bold bg-green-600 py-1 px-3 hover:bg-green-700 rounded-md absolute bottom-2 right-8"
             >
               Like
             </button>
