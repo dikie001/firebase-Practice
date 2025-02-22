@@ -6,8 +6,15 @@ import Auth from "./components/auth";
 import Auth2 from "./components/auth2";
 import { db } from "./config/firebaseConfig";
 import { useEffect } from "react";
-import { getDocs, collection, addDoc } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  addDoc,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import Notification from "./components/notification";
+import UpdateMovies from "./components/updateMovie";
 
 const App = () => {
   const [movies, setMovies] = useState([]);
@@ -17,6 +24,7 @@ const App = () => {
   const [newActor, setNewActor] = useState("");
   const [newDate, setNewDate] = useState(0);
   const [newOscar, setNewOscar] = useState(false);
+  const [showCard, setShowCard] = useState(false);
 
   const getMovieList = async () => {
     try {
@@ -61,27 +69,37 @@ const App = () => {
     setNewDate(0);
     setNewOscar(false);
   };
-  const delMovie = () => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this movie?"
-    );
-    if (!confirmDelete) return;
+  const delMovie = async (id) => {
+    const movieDoc = doc(db, "movies", id);
+    await deleteDoc(movieDoc);
+    getMovieList();
 
-    toast.error("Feature not available!", {
+    toast.warn("Movie deleted!", {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 1000,
     });
   };
+  const updateMovie = async (id) => {
+    setShowCard(true);
+  }
 
   const likeMovie = () => {
     toast.success("Movie liked!", {
       position: "top-right",
-      autoClose: 2000,
+      autoClose: 1000,
     });
+  
   };
   return (
+
     <div className="flex flex-col justify-center items-center">
+  
       <ToastContainer />
+      {showCard &&(
+      <div className="fixed flex inset-0 z-20 bg-opacity-20 backdrop-blur-md backdrop-contrast-40 items-center justify-center ">
+      {showCard && <UpdateMovies onClose={()=>setShowCard(false)} />}
+      </div>
+)}
       <div className="flex flex-col justify-center items-center mt-4">
         <h1 className="text-4xl font-extrabold">Add Movies...</h1>
         <input
@@ -140,14 +158,20 @@ const App = () => {
             <p className="text-xl font-semibold">Actor: {movie.Actor}</p>
             <p className="font-semibold text-xl">Date: {movie.releaseDate}</p>
             <button
-              onClick={delMovie}
-              className="text-white font-bold bg-red-600 py-1 px-2 absolute bottom-1 left-1 rounded-md hover:bg-red-900"
+              onClick={() => delMovie(movie.id)}
+              className="text-white font-bold bg-red-600 py-1 px-1 absolute bottom-1 left-1 rounded-md hover:bg-red-900"
             >
               Delete
             </button>
             <button
+              onClick={updateMovie}
+              className="bg-blue-700 absolute bottom-1 py-1 px-2 rounded-md text-white font-bold"
+            >
+              Update Movie
+            </button>
+            <button
               onClick={likeMovie}
-              className="text-white font-bold bg-green-600 py-1 px-4 hover:bg-green-700 rounded-md absolute bottom-1 right-1"
+              className="text-white font-bold bg-green-600 py-1 px-3 hover:bg-green-700 rounded-md absolute bottom-1 right-1"
             >
               Like
             </button>
@@ -156,6 +180,7 @@ const App = () => {
       </div>
       {notif && <Notification />}
     </div>
+    
   );
 };
 
